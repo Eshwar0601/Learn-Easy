@@ -7,9 +7,9 @@ app = Flask(__name__)
 def upload():  
     return render_template("index.html")  
  
-language = 'en'
+language = 'en-us'
 
-@app.route('/play', methods = ['POST'])  
+@app.route('/', methods = ['POST'])  
 def success():  
     if request.method == 'POST':  
         f = request.files['file']  
@@ -21,11 +21,12 @@ def success():
         print(number_of_pages)
         page = read_pdf.getPage(0)
         page_content = page.extractText()
-        #print(page_content)
+
         myobj = gTTS(text=page_content, lang=language, slow=False)
         myobj.save("welcome.wav")
-        #os.system("mpg321 welcome.mp3") 
-        return render_template("play.html", name = f.filename)  
+
+        return render_template("index.html", name = page_content)
+          
 
 if __name__ == '__main__':  
     app.run(debug=True)  
